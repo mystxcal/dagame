@@ -18,7 +18,7 @@ pauseBtn.addEventListener('click', () => {
   startBtn.addEventListener('click', () => {
     isPaused = false;
   });
-const resetBtn = document.querySelector('#resetBtn');
+
 resetBtn.addEventListener('click', reset);
 
 
