@@ -114,25 +114,4 @@ body {
     border-radius: 1vmin;
     width: 80%;
   }
-
-/* Add styles for pet status */
-#pet-status {
-  color: #fff;
-  margin: 20px;
-  font-size: 18px;
-}
-
-/* Add styles for action buttons */
-#actions button {
-  margin: 5px;
-}
-
-/* Pet display */
-#main-game {
-  white-space: pre;
-  font-family: "Courier New", Courier, monospace;
-  color: #a2d149;
-  overflow: hidden;
-}
-
   
