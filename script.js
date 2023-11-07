@@ -22,12 +22,6 @@ pauseBtn.addEventListener('click', () => {
 resetBtn.addEventListener('click', reset);
 
 
-window.onload = function()
-{
-displayNotifications();
-main()
-}
-
 function main(){
 setInterval(() => {
     if(isPaused===false){
@@ -154,7 +148,9 @@ setInterval(() => {
 }, 5000); // Update every 5 seconds for demo purposes
 
 // Call displayPet on window load to show initial pet state
-window.onload = function() {
-  // ... (existing code)
-  displayPet();
+window.onload = function()
+{
+displayNotifications();
+displayPet();
+main();
 }
