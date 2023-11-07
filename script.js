@@ -80,3 +80,64 @@ function reset() {
     isPaused = true; // Pause the game
     // clearInterval(intervalId); // Clear the interval that's running the main function
   }
+
+
+const asciiPet = `
+  /\\_/\\  
+ ( o.o ) 
+  > ^ <
+`;
+
+// Pet status
+let hunger = 100;
+let happiness = 100;
+let cleanliness = 100;
+
+// Update pet status on the DOM
+function updatePetStatus() {
+  document.getElementById('hunger').textContent = hunger;
+  document.getElementById('happiness').textContent = happiness;
+  document.getElementById('cleanliness').textContent = cleanliness;
+}
+
+// Display the pet
+function displayPet() {
+  document.getElementById('main-game').textContent = asciiPet;
+}
+
+// Action buttons
+const feedBtn = document.getElementById('feedBtn');
+const playBtn = document.getElementById('playBtn');
+const cleanBtn = document.getElementById('cleanBtn');
+
+feedBtn.addEventListener('click', () => {
+  hunger = Math.min(hunger + 20, 100);
+  updatePetStatus();
+});
+
+playBtn.addEventListener('click', () => {
+  happiness = Math.min(happiness + 20, 100);
+  updatePetStatus();
+});
+
+cleanBtn.addEventListener('click', () => {
+  cleanliness = Math.min(cleanliness + 20, 100);
+  updatePetStatus();
+});
+
+// Time-based status changes
+setInterval(() => {
+  if (!isPaused) {
+    // Decrease pet status over time
+    hunger = Math.max(hunger - 1, 0);
+    happiness = Math.max(happiness - 1, 0);
+    cleanliness = Math.max(cleanliness - 1, 0);
+    updatePetStatus();
+
+    // Check pet's health
+    if (hunger === 0 || happiness === 0 || cleanliness === 0) {
+      // Notify the player that the pet needs care
+      updateNotifications('Your pet needs attention!', days, hours, minutes);
+    }
+  }
+}, 5000); // Update every 5 seconds for demo
