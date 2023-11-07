@@ -1,17 +1,21 @@
-
-
 let time = localStorage.getItem('time') ? parseInt(localStorage.getItem('time')) : 0;
 const notifications = localStorage.getItem('notifications') ? JSON.parse(localStorage.getItem('notifications')) : [];
 let isPaused = true;
 
-
+// Corrected: Removed the duplicate 'playBtn' declaration
 const pauseBtn = document.querySelector('#pauseBtn');
-const playBtn = document.querySelector('#playBtn');
+const startBtn = document.querySelector('#startBtn');
+const resetBtn = document.querySelector('#resetBtn');
+const feedBtn = document.querySelector('#feedBtn');
+const playWithBtn = document.querySelector('#playBtn'); // Renamed for clarity
+const cleanBtn = document.querySelector('#cleanBtn');
+
+
 pauseBtn.addEventListener('click', () => {
     isPaused = true;
   });
   
-  playBtn.addEventListener('click', () => {
+  startBtn.addEventListener('click', () => {
     isPaused = false;
   });
 const resetBtn = document.querySelector('#resetBtn');
@@ -82,62 +86,75 @@ function reset() {
   }
 
 
-const asciiPet = `
+
+// ASCII Art for the pet
+const asciiPetHappy = `
   /\\_/\\  
- ( o.o ) 
+ ( ^.^ ) 
   > ^ <
 `;
 
-// Pet status
-let hunger = 100;
-let happiness = 100;
-let cleanliness = 100;
+const asciiPetSad = `
+  /\\_/\\  
+ ( -.- ) 
+  > ^ <
+`;
 
-// Update pet status on the DOM
-function updatePetStatus() {
-  document.getElementById('hunger').textContent = hunger;
-  document.getElementById('happiness').textContent = happiness;
-  document.getElementById('cleanliness').textContent = cleanliness;
-}
+let petLevel = 1;
 
-// Display the pet
+// Update the display of the pet based on its status
 function displayPet() {
-  document.getElementById('main-game').textContent = asciiPet;
+  const mainGame = document.getElementById('main-game');
+  mainGame.textContent = happiness > 50 ? asciiPetHappy : asciiPetSad;
+  mainGame.style.color = happiness > 50 ? '#a2d149' : '#ff6961'; // Happy green or sad red
 }
 
-// Action buttons
-const feedBtn = document.getElementById('feedBtn');
-const playBtn = document.getElementById('playBtn');
-const cleanBtn = document.getElementById('cleanBtn');
+// ... (rest of the existing code)
 
+// Modify action button event listeners
 feedBtn.addEventListener('click', () => {
   hunger = Math.min(hunger + 20, 100);
+  displayPet(); // Update pet's visual state
   updatePetStatus();
 });
 
-playBtn.addEventListener('click', () => {
+playWithBtn.addEventListener('click', () => {
   happiness = Math.min(happiness + 20, 100);
+  displayPet(); // Update pet's visual state
   updatePetStatus();
 });
 
 cleanBtn.addEventListener('click', () => {
   cleanliness = Math.min(cleanliness + 20, 100);
+  displayPet(); // Update pet's visual state
   updatePetStatus();
 });
 
-// Time-based status changes
+// ... (rest of the existing code)
+
+// Function to handle pet level up
+function levelUp() {
+  if (hunger > 80 && happiness > 80 && cleanliness > 80) {
+    petLevel++;
+    updateNotifications(`Your pet has reached level ${petLevel}!`, days, hours, minutes);
+  }
+}
+
+// Modify the interval function to include level up and pet status display
 setInterval(() => {
   if (!isPaused) {
-    // Decrease pet status over time
-    hunger = Math.max(hunger - 1, 0);
-    happiness = Math.max(happiness - 1, 0);
-    cleanliness = Math.max(cleanliness - 1, 0);
-    updatePetStatus();
+    // ... (existing time-based status changes code)
 
-    // Check pet's health
-    if (hunger === 0 || happiness === 0 || cleanliness === 0) {
-      // Notify the player that the pet needs care
-      updateNotifications('Your pet needs attention!', days, hours, minutes);
-    }
+    // Level up logic
+    levelUp();
+
+    // Display pet changes
+    displayPet();
   }
-}, 5000); // Update every 5 seconds for demo
+}, 5000); // Update every 5 seconds for demo purposes
+
+// Call displayPet on window load to show initial pet state
+window.onload = function() {
+  // ... (existing code)
+  displayPet();
+}
